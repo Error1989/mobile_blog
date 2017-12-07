@@ -2,11 +2,18 @@
     <div id="message" style="height: 100%;">
       <yd-layout>
         <!--头部导航-->
-        <yd-navbar slot="navbar" title="消息" bgcolor="#09bb07" color="#fff">
+        <yd-navbar slot="navbar" title="消息" bgcolor="#09bb07" color="#fff" style="height: .9rem">
 
         </yd-navbar>
 
-        <yd-backtop></yd-backtop>
+        <!--主体内容-->
+        <yd-pullrefresh :callback="loadList" ref="pullrefreshDemo">
+          <yd-list theme="4">
+
+          </yd-list>
+
+          <yd-backtop></yd-backtop>
+        </yd-pullrefresh>
 
         <!--底部导航-->
         <yd-tabbar slot="tabbar">
@@ -39,6 +46,12 @@ export default {
 
       }
   },
+  beforeCreate () {
+    this.$dialog.loading.open('加载中');
+  },
+  created () {
+    this.$dialog.loading.close();
+  },
   mounted () {
 
   },
@@ -46,6 +59,14 @@ export default {
 
   },
   methods: {
+    //下拉刷新
+    loadList() {
+      location.reload();
+      this.$dialog.toast({
+        mes: '页面正在刷新',
+      });
+      this.$refs.pullrefreshDemo.$emit('ydui.pullrefresh.finishLoad');
+    },
 
   },
   components:{  },

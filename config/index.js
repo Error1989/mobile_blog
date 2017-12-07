@@ -10,7 +10,28 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      '/api_index':{
+        target:'http://localhost:3000',
+        changeOrigin: true,
+      },
+      '/api_science':{
+        target:'http://localhost:3000',
+        changeOrigin: true,
+      },
+      '/api_article':{
+        target:'http://localhost:3000',
+        changeOrigin: true,
+      },
+      '/api_search':{
+        target:'http://localhost:3000',
+        changeOrigin: true,
+      },
+      '/api_admin':{
+        target:'http://localhost:3000',
+        changeOrigin: true,
+      },
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
