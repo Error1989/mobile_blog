@@ -1,5 +1,5 @@
 /**
- * Created by Acer on 2017-12-04.
+ * Created by Acer on 2017-12-12.
  */
 var express = require('express');
 var router = express.Router();
@@ -13,7 +13,7 @@ router.post('/', function(req, res, next) {
   var numbers = (page-1)*pagesize;
   var searchData = req.body.searchData;
   if (searchData) {
-    pool.query(`SELECT * FROM article WHERE \`TITLE\` LIKE '%${searchData}%' OR \`AUTHOR\` LIKE '%${searchData}%' AND \`PARTITION\`='科技'ORDER BY ID DESC LIMIT ${numbers},${pagesize}`,(err, data)=>{
+    pool.query(`SELECT * FROM article WHERE \`TITLE\` LIKE '%${searchData}%' OR \`AUTHOR\` LIKE '%${searchData}%' AND \`PARTITION\`='音乐'ORDER BY ID DESC LIMIT ${numbers},${pagesize}`,(err, data)=>{
       if (err) {
         res.json({
           status:'0',
@@ -31,7 +31,7 @@ router.post('/', function(req, res, next) {
       }
     });
   }else {
-    pool.query(`SELECT * FROM article WHERE \`PARTITION\`='科技'ORDER BY ID DESC LIMIT ${numbers},${pagesize}`,(err, data)=>{
+    pool.query(`SELECT * FROM article WHERE \`PARTITION\`='音乐'ORDER BY ID DESC LIMIT ${numbers},${pagesize}`,(err, data)=>{
       if (err) {
         res.json({
           status:'0',

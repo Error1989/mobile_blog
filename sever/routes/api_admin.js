@@ -6,8 +6,7 @@ var router = express.Router();
 var mysql = require('mysql');
 
 var pool = mysql.createPool({host: 'localhost', user: 'root', password: '1q2w3e', database: 'mobile_blog'});
-/* GET home page. */
-router.use('/', function(req, res, next) {
+router.post('/', function(req, res, next) {
 
 });
 

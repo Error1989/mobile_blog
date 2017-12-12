@@ -21,7 +21,7 @@
               <router-link :to="{ path: '/article', query: { id: item.id } }">
                 <h3>{{item.title}}</h3>
               </router-link>
-              <span>赞同 • {{item.approval}}</span><span>评论 • 200</span><span>作者 • {{item.author}}</span>
+              <span>赞同 • {{item.approval}}</span><span>评论 • {{item.comment}}</span><span>作者 • {{item.author}}</span>
             </li>
             <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20" style="text-align: center;margin-top: 20px;">
               <img src="./../assets/loading.gif" v-if="loading">

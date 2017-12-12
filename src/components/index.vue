@@ -8,7 +8,12 @@
         </router-link>
       </yd-navbar>
 
-      <!--轮播图-->
+      <yd-pullrefresh :callback="loadList" ref="pullrefreshDemo">
+        <yd-list theme="4">
+
+        </yd-list>
+
+        <!--轮播图-->
       <slide></slide>
 
       <!--滚动公告-->
@@ -22,18 +27,13 @@
       </yd-flexbox>
 
       <!--主体内容-->
-      <yd-pullrefresh :callback="loadList" ref="pullrefreshDemo">
-        <yd-list theme="4">
-
-        </yd-list>
-
         <div>
           <ul class="list" slot="list">
             <li v-for="item in dataList">
               <router-link :to="{ path: '/article', query: { id: item.id } }">
                 <h3>{{item.title}}</h3>
               </router-link>
-              <span>赞同 • {{item.approval}}</span><span>评论 • 200</span><span>作者 • {{item.author}}</span>
+              <span>赞同 • {{item.approval}}</span><span>评论 • {{item.comment}}</span><span>作者 • {{item.author}}</span>
             </li>
             <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20" style="text-align: center;margin-top: 20px;">
               <img src="./../assets/loading.gif" v-if="loading">

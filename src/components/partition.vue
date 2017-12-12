@@ -15,23 +15,23 @@
           <yd-icon name="phone3" slot="icon" color="#FF685D"></yd-icon>
           <span slot="text">科技</span>
         </yd-grids-item>
-        <yd-grids-item link="">
+        <yd-grids-item link="game">
           <yd-icon name="qq" slot="icon" color="#FF685D"></yd-icon>
           <span slot="text">游戏</span>
         </yd-grids-item>
-        <yd-grids-item link="">
+        <yd-grids-item link="music">
           <yd-icon name="play" slot="icon" color="#FF685D"></yd-icon>
           <span slot="text">音乐</span>
         </yd-grids-item>
-        <yd-grids-item link="">
+        <yd-grids-item link="car">
           <yd-icon name="setting" slot="icon" color="#FF685D"></yd-icon>
           <span slot="text">汽车</span>
         </yd-grids-item>
-        <yd-grids-item link="">
+        <yd-grids-item link="video">
           <yd-icon name="video" slot="icon" color="#FF685D"></yd-icon>
           <span slot="text">影视</span>
         </yd-grids-item>
-        <yd-grids-item link="">
+        <yd-grids-item link="military">
           <yd-icon name="shield-outline" slot="icon" color="#FF685D"></yd-icon>
           <span slot="text">军事</span>
         </yd-grids-item>

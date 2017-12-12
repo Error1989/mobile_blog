@@ -7,7 +7,7 @@ var mysql = require('mysql');
 
 var pool = mysql.createPool({host: 'localhost', user: 'root', password: '1q2w3e', database: 'mobile_blog'});
 
-router.use('/', function(req, res, next) {
+router.post('/', function(req, res, next) {
   var page = req.body.page;
   var pagesize = req.body.pagesize;
   var numbers = (page-1)*pagesize;

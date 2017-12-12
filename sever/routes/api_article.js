@@ -7,7 +7,7 @@ var mysql = require('mysql');
 
 var pool = mysql.createPool({host: 'localhost', user: 'root', password: '1q2w3e', database: 'mobile_blog'});
 
-router.use('/', function(req, res, next) {
+router.post('/', function(req, res, next) {
   if(req.body.article_id){
     //查询数据库中article的数据
     pool.query(`SELECT * FROM article WHERE ID=${req.body.article_id}`,(err,data)=>{

@@ -19,11 +19,35 @@ module.exports = {
         target:'http://localhost:3000',
         changeOrigin: true,
       },
+      '/api_game':{
+        target:'http://localhost:3000',
+        changeOrigin: true,
+      },
+      '/api_music':{
+        target:'http://localhost:3000',
+        changeOrigin: true,
+      },
+      '/api_car':{
+        target:'http://localhost:3000',
+        changeOrigin: true,
+      },
+      '/api_video':{
+        target:'http://localhost:3000',
+        changeOrigin: true,
+      },
+      '/api_military':{
+        target:'http://localhost:3000',
+        changeOrigin: true,
+      },
       '/api_article':{
         target:'http://localhost:3000',
         changeOrigin: true,
       },
       '/api_search':{
+        target:'http://localhost:3000',
+        changeOrigin: true,
+      },
+      '/api_login/*':{
         target:'http://localhost:3000',
         changeOrigin: true,
       },

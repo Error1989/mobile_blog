@@ -8,6 +8,11 @@ import message from './components/message.vue'
 import search from './components/search.vue'
 import admin from './components/admin.vue'
 import science from './components/science.vue'
+import game from './components/game.vue'
+import music from './components/music.vue'
+import car from './components/car.vue'
+import video from './components/video.vue'
+import military from './components/military.vue'
 import article from './components/article.vue'
 
 import YDUI from 'vue-ydui'
@@ -61,6 +66,31 @@ const router = new VueRouter ({
       component: science
     },
     {
+      path: '/game',
+      name: 'game',
+      component: game
+    },
+    {
+      path: '/music',
+      name: 'music',
+      component: music
+    },
+    {
+      path: '/car',
+      name: 'car',
+      component: car
+    },
+    {
+      path: '/video',
+      name: 'video',
+      component: video
+    },
+    {
+      path: '/military',
+      name: 'military',
+      component: military
+    },
+    {
       path: '/article',
       name: 'article',
       component: article
@@ -76,5 +106,5 @@ new Vue({
   render: h => h(App),
   router,
   template: '<App/>',
-  components: { App, index, partition, message, search, admin, science, article   }
+  components: { App, index, partition, message, search, admin, science, game, music, car, video, military, article }
 })

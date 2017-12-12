@@ -11,8 +11,13 @@ var consolidate = require('consolidate');
 var ejs = require('ejs');
 
 var api_index = require('./routes/api_index');
-var users = require('./routes/users');
+var api_login = require('./routes/api_login');
 var api_science = require('./routes/api_science');
+var api_game = require('./routes/api_game');
+var api_music = require('./routes/api_music');
+var api_car = require('./routes/api_car');
+var api_video = require('./routes/api_video');
+var api_military = require('./routes/api_military');
 var api_article = require('./routes/api_article');
 var api_admin = require('./routes/api_admin');
 var api_search = require('./routes/api_search');
@@ -34,9 +39,18 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(multer({dest: './www/upload'}).any());
 
+// app.use(function (req, res, next) {
+//
+// });
+
 app.use('/api_index', api_index);
-app.use('/users', users);
+app.use('/api_login', api_login);
 app.use('/api_science', api_science);
+app.use('/api_game', api_game);
+app.use('/api_music', api_music);
+app.use('/api_car', api_car);
+app.use('/api_video', api_video);
+app.use('/api_military', api_military);
 app.use('/api_article', api_article);
 app.use('/api_admin', api_admin);
 app.use('/api_search', api_search);
