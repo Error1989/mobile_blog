@@ -126,7 +126,7 @@
             })
             .catch((error)=>{
               this.$dialog.toast({
-                mes: '出错了',
+                mes: '搜索失败',
                 timeout: 1500,
                 icon: 'error',
               });

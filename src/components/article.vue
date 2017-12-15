@@ -14,8 +14,8 @@
 
           <yd-cell-group>
             <yd-cell-item>
-              <img slot="icon" :src="dataArticle.portrait">
-              <span slot="left" style="font-family: 楷体;font-weight: bolder">{{dataArticle.author}}</span>
+              <img slot="icon" :src="dataArticle.portrait" style="max-width: 58px;max-height: 58px;height: .8rem;">
+              <span slot="left" style="font-family: 楷体;font-weight: bolder;">{{dataArticle.author}}</span>
               <span slot="right"><yd-button type="primary">关 注</yd-button></span>
             </yd-cell-item>
           </yd-cell-group>

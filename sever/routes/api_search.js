@@ -16,7 +16,7 @@ router.post('/', function(req, res, next) {
     if (err) {
       res.json({
         status:'0',
-        msg:'出错了',
+        msg:'搜索失败',
       });
     }else {
       res.json({

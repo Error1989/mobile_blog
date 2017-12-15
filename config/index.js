@@ -11,39 +11,39 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/api_index':{
+      '/api_index/*':{
         target:'http://localhost:3000',
         changeOrigin: true,
       },
-      '/api_science':{
+      '/api_science/*':{
         target:'http://localhost:3000',
         changeOrigin: true,
       },
-      '/api_game':{
+      '/api_game/*':{
         target:'http://localhost:3000',
         changeOrigin: true,
       },
-      '/api_music':{
+      '/api_music/*':{
         target:'http://localhost:3000',
         changeOrigin: true,
       },
-      '/api_car':{
+      '/api_car/*':{
         target:'http://localhost:3000',
         changeOrigin: true,
       },
-      '/api_video':{
+      '/api_video/*':{
         target:'http://localhost:3000',
         changeOrigin: true,
       },
-      '/api_military':{
+      '/api_military/*':{
         target:'http://localhost:3000',
         changeOrigin: true,
       },
-      '/api_article':{
+      '/api_article/*':{
         target:'http://localhost:3000',
         changeOrigin: true,
       },
-      '/api_search':{
+      '/api_search/*':{
         target:'http://localhost:3000',
         changeOrigin: true,
       },
@@ -51,7 +51,7 @@ module.exports = {
         target:'http://localhost:3000',
         changeOrigin: true,
       },
-      '/api_admin':{
+      '/api_admin/*':{
         target:'http://localhost:3000',
         changeOrigin: true,
       },

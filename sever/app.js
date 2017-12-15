@@ -39,9 +39,32 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(multer({dest: './www/upload'}).any());
 
-// app.use(function (req, res, next) {
-//
-// });
+app.use(function (req, res, next) {
+  if (req.body.userId&&req.body.access_token) {
+    next();
+  }else {
+    if (
+      req.path == '/api_index' ||
+      req.path == '/api_login' ||
+      req.path == '/api_login/register' ||
+      req.path == '/api_science' ||
+      req.path == '/api_game' ||
+      req.path == '/api_music' ||
+      req.path == '/api_car' ||
+      req.path == '/api_video' ||
+      req.path == '/api_military' ||
+      req.path == '/api_article' ||
+      req.path == '/api_search'
+    ) {
+      next();
+    }else {
+      res.json({
+        status: '-99',
+        msg: '请先登录',
+      })
+    }
+  }
+});
 
 app.use('/api_index', api_index);
 app.use('/api_login', api_login);

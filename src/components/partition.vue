@@ -48,11 +48,14 @@
           <yd-icon name="type" slot="icon"></yd-icon>
         </yd-tabbar-item>
         <yd-tabbar-item title="消息" link="/message">
-          <yd-icon name="feedback" slot="icon"></yd-icon>
+          <yd-icon name="order" slot="icon"></yd-icon>
           <yd-badge slot="badge" type="danger">2</yd-badge>
         </yd-tabbar-item>
         <yd-tabbar-item title="搜索" link="/search">
           <yd-icon name="search" slot="icon"></yd-icon>
+        </yd-tabbar-item>
+        <yd-tabbar-item title="发布文章" link="/write">
+          <yd-icon name="feedback" slot="icon"></yd-icon>
         </yd-tabbar-item>
         <yd-tabbar-item title="个人中心" link="/admin">
           <yd-icon name="ucenter-outline" slot="icon"></yd-icon>

@@ -1,8 +1,8 @@
 <template>
-    <div id="message" style="height: 100%;">
+    <div id="write" style="height: 100%;">
       <yd-layout>
         <!--头部导航-->
-        <yd-navbar slot="navbar" title="消息" bgcolor="#09bb07" color="#fff" style="height: .9rem">
+        <yd-navbar slot="navbar" title="发布文章" bgcolor="#09bb07" color="#fff" style="height: .9rem">
 
         </yd-navbar>
 
@@ -23,14 +23,14 @@
           <yd-tabbar-item title="分区" link="/partition">
             <yd-icon name="type" slot="icon"></yd-icon>
           </yd-tabbar-item>
-          <yd-tabbar-item title="消息" link="/message" active>
+          <yd-tabbar-item title="消息" link="/message">
             <yd-icon name="order" slot="icon"></yd-icon>
             <yd-badge slot="badge" type="danger">2</yd-badge>
           </yd-tabbar-item>
           <yd-tabbar-item title="搜索" link="/search">
             <yd-icon name="search" slot="icon"></yd-icon>
           </yd-tabbar-item>
-          <yd-tabbar-item title="发布文章" link="/write">
+          <yd-tabbar-item title="发布文章" link="/write" active>
             <yd-icon name="feedback" slot="icon"></yd-icon>
           </yd-tabbar-item>
           <yd-tabbar-item title="个人中心" link="/admin">
@@ -43,11 +43,11 @@
 
 <script>
 export default {
-  name: 'message',
+    name: 'write',
   data () {
-      return {
+    return {
 
-      }
+    }
   },
   beforeCreate () {
     this.$dialog.loading.open('加载中');

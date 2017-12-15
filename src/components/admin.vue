@@ -14,11 +14,11 @@
 
         <yd-tab>
           <yd-tab-panel label="账号资料">
-            <div>
+            <div style="margin-top: 2px;">
               <yd-cell-group>
                 <yd-cell-item>
                   <span slot="left">用户头像</span>
-                  <span slot="right"><img slot="img" :src=dataUser.portrait></span>
+                  <span slot="right"><img slot="img" :src=dataUser.portrait style="max-width: 58px;max-height: 58px;"></span>
                 </yd-cell-item>
                 <yd-cell-item>
                   <span slot="left">昵称</span>
@@ -45,22 +45,35 @@
                     <span slot="left">修改密码</span>
                     <span slot="right"></span>
                   </yd-cell-item>
+                  <yd-cell-item arrow @click.native="show5 = true">
+                    <span slot="left">变更头像</span>
+                    <span slot="right"></span>
+                  </yd-cell-item>
                 </div>
               </yd-cell-group>
             </div>
+            <yd-flexbox>
+              <yd-flexbox-item>
+                <div v-if="!show2">
+                  <yd-cell-group>
+                    <yd-button size="large" type="primary" class="button" @click.native="show = true">登录</yd-button>
+                  </yd-cell-group>
+                </div>
 
-            <div v-if="!show2">
-              <yd-cell-group>
-                <yd-button size="large" type="primary" style="margin-top: 15%;" @click.native="show = true">登录</yd-button>
-              </yd-cell-group>
-            </div>
-
-            <div v-else="show2">
-              <yd-cell-group>
-                <yd-button size="large" type="danger" style="margin-top: 15%;" @click.native="signOut">退出登录</yd-button>
-              </yd-cell-group>
-            </div>
-
+                <div v-else="show2">
+                  <yd-cell-group>
+                    <yd-button size="large" type="danger" class="button" @click.native="signOut">退出登录</yd-button>
+                  </yd-cell-group>
+                </div>
+              </yd-flexbox-item>
+              <yd-flexbox-item>
+                <div>
+                  <yd-cell-group>
+                    <yd-button size="large" type="hollow" class="button" @click.native="show6 = true">注册</yd-button>
+                  </yd-cell-group>
+                </div>
+              </yd-flexbox-item>
+            </yd-flexbox>
           </yd-tab-panel>
 
           <yd-tab-panel label="发布信息">
@@ -83,7 +96,7 @@
         <yd-cell-group>
           <yd-cell-item>
             <span slot="left">昵称：</span>
-            <yd-input slot="right" min="4" max="16" required v-model="nickName" placeholder="请输入新的昵称"></yd-input>
+            <yd-input slot="right" min="2" max="8" required v-model="nickName" placeholder="请输入新的昵称"></yd-input>
           </yd-cell-item>
 
           <yd-cell-item arrow type="label">
@@ -103,7 +116,6 @@
             <yd-input slot="right" max="32" v-model="autograph" placeholder="请输新的个性签名（可不填）"></yd-input>
           </yd-cell-item>
         </yd-cell-group>
-
         <div v-if="nickName&&sex&&birthday">
           <yd-button size="large" type="primary" style="bottom: 10px;margin:0 auto;width: 80%;" @click.native="changeData">提交</yd-button>
         </div>
@@ -140,15 +152,73 @@
 
       </yd-popup>
 
-      <yd-popup v-model="show" position="center" width="90%">
+      <yd-popup v-model="show5" position="center" width="90%">
+        <el-upload
+          class="avatar-uploader"
+          action="/api_admin/changePortrait"
+          :show-file-list="true"
+          :auto-upload="true"
+          list-type="picture"
+          :limit="1"
+          :on-success="handleAvatarSuccess"
+          :before-upload="beforeAvatarUpload"
+          :data="form">
+            <img v-if="imageUrl" :src="imageUrl" class="avatar">
+            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+        </el-upload>
+      </yd-popup>
+
+      <yd-popup v-model="show6" position="center" width="90%">
         <yd-cell-group>
           <yd-cell-item>
-            <span slot="left">用户名：</span>
-            <yd-input slot="right" required v-model="userName" max="20" placeholder="请输入用户名"></yd-input>
+            <span slot="left">账号：</span>
+            <yd-input slot="right" min="2" max="16" v-model="register_userName" required placeholder="请输入账号"></yd-input>
           </yd-cell-item>
           <yd-cell-item>
             <span slot="left">密码：</span>
-            <yd-input slot="right" required type="password" v-model="userPassword" placeholder="请输入密码"></yd-input>
+            <yd-input slot="right" min="6" max="16" v-model="register_userPassword" required type="password" placeholder="请输入密码"></yd-input>
+          </yd-cell-item>
+          <yd-cell-item>
+            <span slot="left">昵称：</span>
+            <yd-input slot="right" min="2" max="8" v-model="register_nickName" required placeholder="请输入昵称"></yd-input>
+          </yd-cell-item>
+
+          <yd-cell-item arrow type="label">
+            <span slot="left">性别：</span>
+            <select slot="right" v-model="register_sex">
+              <option value="男">男</option>
+              <option value="女">女</option>
+            </select>
+          </yd-cell-item>
+
+          <yd-cell-item arrow>
+            <span slot="left">生日：</span>
+            <yd-datetime slot="right" type="date" v-model="register_birthday" start-date="1900-01-01" end-date="2100-01-01"></yd-datetime>
+          </yd-cell-item>
+          <yd-cell-item>
+            <span slot="left">个性签名：</span>
+            <yd-input slot="right" max="32" v-model="register_autograph" placeholder="请输入个性签名（可不填）"></yd-input>
+          </yd-cell-item>
+        </yd-cell-group>
+        <div v-if="register_userName&&register_userPassword&&register_sex&&register_birthday">
+          <yd-button size="large" type="primary" style="bottom: 10px;margin:0 auto;width: 80%;" @click.native="register">提交</yd-button>
+        </div>
+
+        <div v-else>
+          <yd-button size="large" disabled type="primary" style="bottom: 10px;margin:0 auto;width: 80%;" @click.native="register">提交</yd-button>
+        </div>
+
+      </yd-popup>
+
+      <yd-popup v-model="show" position="center" width="90%">
+        <yd-cell-group>
+          <yd-cell-item>
+            <span slot="left">账号：</span>
+            <yd-input slot="right" required v-model="userName" min="2" max="16" placeholder="请输入账号"></yd-input>
+          </yd-cell-item>
+          <yd-cell-item>
+            <span slot="left">密码：</span>
+            <yd-input slot="right" min="6" max="16" required type="password" v-model="userPassword" placeholder="请输入密码"></yd-input>
           </yd-cell-item>
         </yd-cell-group>
 
@@ -165,11 +235,14 @@
           <yd-icon name="type" slot="icon"></yd-icon>
         </yd-tabbar-item>
         <yd-tabbar-item title="消息" link="/message">
-          <yd-icon name="feedback" slot="icon"></yd-icon>
+          <yd-icon name="order" slot="icon"></yd-icon>
           <yd-badge slot="badge" type="danger">2</yd-badge>
         </yd-tabbar-item>
         <yd-tabbar-item title="搜索" link="/search">
           <yd-icon name="search" slot="icon"></yd-icon>
+        </yd-tabbar-item>
+        <yd-tabbar-item title="发布文章" link="/write">
+          <yd-icon name="feedback" slot="icon"></yd-icon>
         </yd-tabbar-item>
         <yd-tabbar-item title="个人中心" link="/admin" active>
           <yd-icon name="ucenter-outline" slot="icon"></yd-icon>
@@ -180,7 +253,7 @@
 </template>
 
 <script>
-  import axios from 'axios'
+import axios from 'axios'
 export default {
   name: 'admin',
   data () {
@@ -189,7 +262,17 @@ export default {
         show2:window.localStorage.getItem('userId'),
         show3: false,
         show4: false,
+        show5: false,
+        show6: false,
         start: false,
+        imageUrl: '',
+        form: {userId: window.localStorage.getItem('userId'), access_token: window.localStorage.getItem('access_token')},
+        register_userName: '',
+        register_userPassword: '',
+        register_nickName: '',
+        register_sex: '',
+        register_birthday: '1980-01-01',
+        register_autograph: '',
         userName: '',
         userPassword: '',
         oldPassword: '',
@@ -199,6 +282,7 @@ export default {
         sex: '',
         birthday: '',
         autograph: '',
+        portrait: '',
         dataUser:[],
       }
   },
@@ -218,6 +302,40 @@ export default {
 
   },
   methods: {
+    //注册
+    register () {
+      axios.post('/api_login/register',{
+        register_userName: this.register_userName,
+        register_userPassword: this.register_userPassword,
+        register_nickName: this.register_nickName,
+        register_sex: this.register_sex,
+        register_birthday: this.register_birthday,
+        register_autograph: this.register_autograph,
+      })
+        .then((response)=>{
+          let res = response.data.result;
+          this.$dialog.toast({
+            mes: response.data.msg,
+            timeout: 1500,
+            icon: 'success',
+          });
+          this.show6=false;
+          this.register_userName = '';
+          this.register_userPassword = '';
+          this.register_nickName = '';
+          this.register_sex = '';
+          this.register_birthday = '1980-01-01';
+          this.register_autograph = '';
+        })
+        .catch((error)=>{
+          this.$dialog.toast({
+            mes: '注册失败',
+            timeout: 1500,
+            icon: 'error',
+          });
+        });
+    },
+
     //登录
     login () {
       axios.post('/api_login',{
@@ -241,7 +359,7 @@ export default {
         })
         .catch((error)=>{
           this.$dialog.toast({
-            mes: '账号和密码错误',
+            mes: '账号或密码错误',
             timeout: 1500,
             icon: 'error',
           });
@@ -258,7 +376,7 @@ export default {
     //获取账号资料
     getUser () {
       if (window.localStorage.getItem('userId')) {
-        axios.post('/api_login/userData',{
+        axios.post('/api_admin',{
           userId: window.localStorage.getItem('userId'),
           access_token: window.localStorage.getItem('access_token'),
         })
@@ -269,16 +387,21 @@ export default {
             this.sex = this.dataUser.sex;
             this.birthday = this.dataUser.birthday;
             this.autograph = this.dataUser.autograph;
+            this.portrait = this.dataUser.portrait;
           })
           .catch((error)=>{
-
+            this.$dialog.toast({
+              mes: '出错了',
+              timeout: 1500,
+              icon: 'error',
+            });
           });
       }
     },
 
     //编辑资料
     changeData () {
-      axios.post('/api_login/changeData',{
+      axios.post('/api_admin/changeData',{
         userId: window.localStorage.getItem('userId'),
         access_token: window.localStorage.getItem('access_token'),
         nickName: this.nickName,
@@ -297,7 +420,7 @@ export default {
         })
         .catch((error)=>{
           this.$dialog.toast({
-            mes: '出错了',
+            mes: '修改失败',
             timeout: 1500,
             icon: 'error',
           });
@@ -306,7 +429,7 @@ export default {
 
     //修改密码
     changePassword () {
-      axios.post('/api_login/changePassword',{
+      axios.post('/api_admin/changePassword',{
         userId: window.localStorage.getItem('userId'),
         access_token: window.localStorage.getItem('access_token'),
         newPassword: this.newPassword,
@@ -324,11 +447,45 @@ export default {
         })
         .catch((error)=>{
           this.$dialog.toast({
-            mes: '出错了',
+            mes: '修改失败',
             timeout: 1500,
             icon: 'error',
           });
         });
+    },
+
+    //头像上传成功
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+      if (res.status==1) {
+        this.$dialog.toast({
+          mes: res.msg,
+          timeout: 1500,
+          icon: 'success',
+        });
+      }else {
+        this.$dialog.toast({
+          mes: res.msg,
+          timeout: 1500,
+          icon: 'error',
+        });
+      }
+//      this.show5=false;
+//      location.reload();
+    },
+
+    //头像上传之前
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === 'image/jpeg'||file.type === 'image/png'||file.type === 'image/gif';
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG) {
+        this.$message.error('上传头像图片只能是 JPG/PNG/GIF 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!');
+      }
+      return isJPG && isLt2M;
     },
 
     //下拉刷新
@@ -346,5 +503,34 @@ export default {
 </script>
 
 <style scoped>
+  .avatar-uploader ,el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    left: 50%;
+    margin-top: 40px;
+    margin-bottom: 40px;
 
+  }
+  .avatar-uploader ,el-upload:hover {
+    border-color: #09bb07;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
+  .button {
+    margin-top: 6.7%;
+  }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div id="app" style="height: 100%;background-color:#fff;">
+  <div id="app">
     <router-view></router-view>
   </div>
 </template>
@@ -14,5 +14,8 @@ export default {
 </script>
 
 <style scoped>
-
+#app {
+height: 100%;
+background-color:#fff;
+}
 </style>
