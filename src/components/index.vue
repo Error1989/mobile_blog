@@ -30,10 +30,10 @@
         <div>
           <ul class="list" slot="list">
             <li v-for="item in dataList">
-              <router-link :to="{ path: '/article', query: { id: item.id } }">
-                <h3>{{item.title}}</h3>
-              </router-link>
-              <span>赞同 • {{item.approval}}</span><span>评论 • {{item.comment}}</span><span>作者 • {{item.author}}</span>
+                <router-link :to="{ path: '/article', query: { id: item.id,authorId: item.authorId } }">
+                  <h3>{{item.title}}</h3>
+                </router-link>
+                <span>赞同 • {{item.approval}}</span><span>评论 • {{item.comment}}</span><span>作者 • {{item.author}}</span>
             </li>
             <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20" style="text-align: center;margin-top: 20px;">
               <img src="./../assets/loading.gif" v-if="loading">
@@ -103,7 +103,6 @@ export default {
       axios.post('/api_index',{
         page: this.page,
         pagesize: this.pagesize,
-        searchData:this.searchData,
       })
         .then((response)=>{
           let res = response.data.result;

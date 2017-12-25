@@ -23,11 +23,11 @@
           </yd-cell-item>
         </yd-cell-group>
         <yd-button-group>
-          <yd-button size="small" shape="circle" type="hollow" style="margin: 5px;text-align: center">Python</yd-button>
-          <yd-button size="small" shape="circle" type="hollow" style="margin: 5px;text-align: center">Javascript</yd-button>
-          <yd-button size="small" shape="circle" type="hollow" style="margin: 5px;text-align: center">游戏</yd-button>
-          <yd-button size="small" shape="circle" type="hollow" style="margin: 5px;text-align: center">MySQL</yd-button>
-          <yd-button size="small" shape="circle" type="hollow" style="margin: 5px;text-align: center">汽车</yd-button>
+          <yd-button size="small" shape="circle" type="hollow" class="tip">Python</yd-button>
+          <yd-button size="small" shape="circle" type="hollow" class="tip">Java</yd-button>
+          <yd-button size="small" shape="circle" type="hollow" class="tip">游戏</yd-button>
+          <yd-button size="small" shape="circle" type="hollow" class="tip">MySQL</yd-button>
+          <yd-button size="small" shape="circle" type="hollow" class="tip">音乐</yd-button>
 
         </yd-button-group>
 
@@ -41,7 +41,7 @@
         <div>
           <ul class="list" slot="list">
             <li v-for="item in dataList">
-              <router-link :to="{ path: '/article', query: { id: item.id } }">
+              <router-link :to="{ path: '/article', query: { id: item.id,authorId: item.authorId } }">
                 <h3>{{item.title}}</h3>
               </router-link>
               <span>赞同 • {{item.approval}}</span><span>评论 • {{item.comment}}</span><span>作者 • {{item.author}}</span>
@@ -176,6 +176,11 @@ export default {
 </script>
 
 <style scoped>
+  .tip {
+    margin-left: 5px;
+    margin-right: 5px;
+    text-align: center;
+  }
   .list {
     width:100%;
     height: auto;

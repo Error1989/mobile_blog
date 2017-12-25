@@ -77,19 +77,61 @@
           </yd-tab-panel>
 
           <yd-tab-panel label="发布信息">
-
+            <div>
+              <ul class="list" slot="list">
+                <li v-for="item in writeList">
+                  <router-link :to="{ path: '/article', query: { id: item.id,authorId: item.authorId } }">
+                    <h3>{{item.title}}</h3>
+                  </router-link>
+                  <span>赞同 • {{item.approval}}</span><span>评论 • {{item.comment}}</span>
+                  <span style="float: right"><yd-badge  type="danger" color="#fff" @click.native.once="deleteArticle(item.id)">删 除</yd-badge ></span>
+                  <span style="float: right">
+                    <router-link :to="{ path: '/edirtArticle', query: { id: item.id } }">
+                      <yd-badge  type="warning" color="#fff">编 辑</yd-badge >
+                    </router-link>
+                  </span>
+                </li>
+              </ul>
+            </div>
+            <div v-infinite-scroll="loadMore3" infinite-scroll-disabled="busy3" infinite-scroll-distance="20" style="text-align: center;margin-top: 20px;">
+              <img src="./../assets/loading.gif" v-if="loading3">
+            </div>
            </yd-tab-panel>
 
           <yd-tab-panel label="关注列表">
-
+            <div v-if="followList[0]">
+              <yd-cell-group>
+                <yd-cell-item v-for="item in followList" :key="item.id">
+                  <img slot="icon" :src="item.portrait" style="max-width: 58px;max-height: 58px;height: .8rem;">
+                  <span slot="left" style="font-family: 楷体;font-weight: bolder;">{{item.author}}</span>
+                  <span slot="right"><yd-button type="danger" @click.native.once="deleteFollow(item.authorId)">取消关注</yd-button></span>
+                </yd-cell-item>
+              </yd-cell-group>
+            </div>
+            <div v-infinite-scroll="loadMore2" infinite-scroll-disabled="busy2" infinite-scroll-distance="20" style="text-align: center;margin-top: 20px;">
+              <img src="./../assets/loading.gif" v-if="loading2">
+            </div>
           </yd-tab-panel>
 
           <yd-tab-panel label="收藏夹">
-
+            <div>
+              <ul class="list" slot="list">
+                <li v-for="item in collectionList">
+                  <router-link :to="{ path: '/article', query: { id: item.id,authorId: item.authorId } }">
+                    <h3>{{item.title}}</h3>
+                  </router-link>
+                  <span>赞同 • {{item.approval}}</span><span>评论 • {{item.comment}}</span><span>作者 • {{item.author}}</span>
+                </li>
+              </ul>
+            </div>
+            <div v-infinite-scroll="loadMore1" infinite-scroll-disabled="busy1" infinite-scroll-distance="20" style="text-align: center;margin-top: 20px;">
+              <img src="./../assets/loading.gif" v-if="loading1">
+            </div>
           </yd-tab-panel>
         </yd-tab>
 
         <yd-backtop></yd-backtop>
+
       </yd-pullrefresh>
 
       <yd-popup v-model="show3" position="center" width="90%">
@@ -284,6 +326,19 @@ export default {
         autograph: '',
         portrait: '',
         dataUser:[],
+        loading1: false,
+        loading2: false,
+        loading3: false,
+        busy1: true,
+        busy2: true,
+        busy3: true,
+        page1: 1,
+        page2: 1,
+        page3: 1,
+        pagesize: 8,
+        collectionList:[],
+        followList: [],
+        writeList: [],
       }
   },
   watch: {
@@ -297,6 +352,9 @@ export default {
   },
   mounted () {
     this.getUser();
+    this.getCollectionList();
+    this.getFollowList();
+    this.getWriteList();
   },
   computed: {
 
@@ -370,6 +428,7 @@ export default {
     signOut () {
       window.localStorage.removeItem('userId');
       window.localStorage.removeItem('access_token');
+      window.localStorage.removeItem('nickName');
       location.reload();
     },
 
@@ -488,6 +547,201 @@ export default {
       return isJPG && isLt2M;
     },
 
+    //获取收藏列表
+    getCollectionList(flag) {
+      this.loading1 = true;
+      axios.post('/api_admin/collection',{
+        page: this.page1,
+        pagesize: this.pagesize,
+        userId: window.localStorage.getItem('userId'),
+        access_token: window.localStorage.getItem('access_token'),
+      })
+        .then((response)=>{
+          let res = response.data.result;
+          this.loading1 = false;
+          if(flag) {
+            this.collectionList=this.collectionList.concat(res.data);//flag为true,分页的数据累加
+            if(res.count<this.pagesize || res.count==0) {
+              this.busy1=true;
+            }else {
+              this.busy1=false;
+            }
+          }else {
+            this.collectionList=res.data;//第一次加载页面，数据不累加
+            this.busy1=false;
+          }
+        })
+        .catch((error)=>{
+          this.$dialog.toast({
+            mes: '出错了',
+            timeout: 1500,
+            icon: 'error',
+          });
+        });
+    },
+
+    //获取关注列表
+    getFollowList(flag) {
+      this.loading2 = true;
+      axios.post('/api_admin/follow',{
+        page: this.page2,
+        pagesize: this.pagesize,
+        userId: window.localStorage.getItem('userId'),
+        access_token: window.localStorage.getItem('access_token'),
+      })
+        .then((response)=>{
+          let res = response.data.result;
+          this.loading2 = false;
+          this.count = res.count;
+          if(flag) {
+            this.followList=this.followList.concat(res.data);//flag为true,分页的数据累加
+            if(res.count<this.pagesize || res.count==0) {
+              this.busy2=true;
+            }else {
+              this.busy2=false;
+            }
+          }else {
+            this.followList=res.data;//第一次加载页面，数据不累加
+            this.busy2=false;
+          }
+        })
+        .catch((error)=>{
+          this.$dialog.toast({
+            mes: '出错了',
+            timeout: 1500,
+            icon: 'error',
+          });
+        });
+    },
+
+    //获取发布信息列表
+    getWriteList(flag) {
+      this.loading3 = true;
+      axios.post('/api_admin/write',{
+        page: this.page3,
+        pagesize: this.pagesize,
+        userId: window.localStorage.getItem('userId'),
+        access_token: window.localStorage.getItem('access_token'),
+      })
+        .then((response)=>{
+          let res = response.data.result;
+          this.loading3 = false;
+          this.count = res.count;
+          if(flag) {
+            this.writeList=this.writeList.concat(res.data);//flag为true,分页的数据累加
+            if(res.count<this.pagesize || res.count==0) {
+              this.busy3=true;
+            }else {
+              this.busy3=false;
+            }
+          }else {
+            this.writeList=res.data;//第一次加载页面，数据不累加
+            this.busy3=false;
+          }
+        })
+        .catch((error)=>{
+          this.$dialog.toast({
+            mes: '出错了',
+            timeout: 1500,
+            icon: 'error',
+          });
+        });
+    },
+
+    //编辑文章
+    editArticle(id) {
+      axios.post('/api_admin/editArticle',{
+        userId: window.localStorage.getItem('userId'),
+        access_token: window.localStorage.getItem('access_token'),
+        id: id,
+      })
+        .then((response)=>{
+          this.$dialog.toast({
+            mes: response.data.msg,
+            timeout: 1500,
+            icon: 'success',
+          });
+        })
+        .catch((error)=>{
+          this.$dialog.toast({
+            mes: '修改失败',
+            timeout: 1500,
+            icon: 'error',
+          });
+        });
+    },
+
+    //删除发布的文章
+    deleteArticle(id) {
+      axios.post('/api_admin/deleteArticle',{
+        userId: window.localStorage.getItem('userId'),
+        access_token: window.localStorage.getItem('access_token'),
+        id: id,
+      })
+        .then((response)=>{
+          this.$dialog.toast({
+            mes: response.data.msg,
+            timeout: 1500,
+            icon: 'success',
+          });
+        })
+        .catch((error)=>{
+          this.$dialog.toast({
+            mes: '取关失败',
+            timeout: 1500,
+            icon: 'error',
+          });
+        });
+    },
+
+    //取消关注
+    deleteFollow(id) {
+      axios.post('/api_admin/deletelFollow',{
+        userId: window.localStorage.getItem('userId'),
+        access_token: window.localStorage.getItem('access_token'),
+        author_id: id,
+      })
+        .then((response)=>{
+          this.$dialog.toast({
+            mes: response.data.msg,
+            timeout: 1500,
+            icon: 'success',
+          });
+        })
+        .catch((error)=>{
+          this.$dialog.toast({
+            mes: '取关失败',
+            timeout: 1500,
+            icon: 'error',
+          });
+        });
+    },
+
+    //分页功能
+    loadMore1(){
+      this.busy1=true;
+      setTimeout(() => {
+        this.page1++;
+        this.getCollectionList(true);
+      }, 500);
+    },
+
+    loadMore2(){
+      this.busy2=true;
+      setTimeout(() => {
+        this.page2++;
+        this.getFollowList(true);
+      }, 500);
+    },
+
+    loadMore3(){
+      this.busy3=true;
+      setTimeout(() => {
+        this.page3++;
+        this.getWriteList(true);
+      }, 500);
+    },
+
     //下拉刷新
     loadList() {
       location.reload();
@@ -531,6 +785,27 @@ export default {
     display: block;
   }
   .button {
-    margin-top: 6.7%;
+    margin-top: 1.5%;
+  }
+  .list {
+    width:100%;
+    height: auto;
+  }
+  .list li {
+    width:100%;
+    height: auto;
+    border-bottom: 1px solid #c9c9c9;
+    padding: 5px;
+  }
+  .list h3 {
+    font-size: 18px;
+    margin-top: 10px;
+    margin-bottom: 25px;
+  }
+  .list span {
+    margin-right: 20px;
+    color: #979797;
+    font-family: 楷体;
+    font-size: 16px;
   }
 </style>

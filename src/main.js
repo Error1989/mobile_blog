@@ -15,6 +15,7 @@ import car from './components/car.vue'
 import video from './components/video.vue'
 import military from './components/military.vue'
 import article from './components/article.vue'
+import edirtArticle from './components/edirtArticle.vue'
 
 import YDUI from 'vue-ydui'
 import 'vue-ydui/dist/ydui.rem.css'
@@ -67,6 +68,15 @@ const router = new VueRouter ({
         requireAuth: true,
       },
       component: write
+    },
+    {
+      path: '/edirtArticle',
+      name: 'edirtArticle',
+      meta: {
+        // 添加该字段，表示进入这个路由是需要登录的
+        requireAuth: true,
+      },
+      component: edirtArticle
     },
     {
       path: '/admin',
@@ -139,5 +149,5 @@ new Vue({
   render: h => h(App),
   router,
   template: '<App/>',
-  components: { App, index, partition, message, search, admin, science, game, music, car, video, military, article, write }
+  components: { App, index, partition, message, search, admin, science, game, music, car, video, military, article, write, edirtArticle }
 })

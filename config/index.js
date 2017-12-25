@@ -51,6 +51,10 @@ module.exports = {
         target:'http://localhost:3000',
         changeOrigin: true,
       },
+      '/api_write/*':{
+        target:'http://localhost:3000',
+        changeOrigin: true,
+      },
       '/api_admin/*':{
         target:'http://localhost:3000',
         changeOrigin: true,

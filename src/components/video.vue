@@ -18,7 +18,7 @@
           <div>
             <ul class="list" slot="list">
               <li v-for="item in dataList">
-                <router-link :to="{ path: '/article', query: { id: item.id } }">
+                <router-link :to="{ path: '/article', query: { id: item.id,authorId: item.authorId } }">
                   <h3>{{item.title}}</h3>
                 </router-link>
                 <span>赞同 • {{item.approval}}</span><span>评论 • {{item.comment}}</span><span>作者 • {{item.author}}</span>

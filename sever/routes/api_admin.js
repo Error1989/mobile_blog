@@ -85,4 +85,111 @@ router.post('/changePassword', function(req, res, next) {
   });
 });
 
+router.post('/collection', function(req, res, next) {
+  var page = req.body.page;
+  var pagesize = req.body.pagesize;
+  var numbers = (page-1)*pagesize;
+  var user_id = req.body.userId;
+  pool.query(`SELECT * FROM collection JOIN article ON collection.article_id=article.id WHERE collection.user_id=${user_id} LIMIT ${numbers},${pagesize}`,(error,data)=>{
+    if(error) {
+      res.json({
+        status:'0',
+        msg:'出错了',
+      });
+    }else {
+      res.json({
+        status:'1',
+        msg:'成功',
+        result:{
+          count:data.length,
+          data:data,
+        }
+      });
+    }
+  });
+});
+
+router.post('/follow', function(req, res, next) {
+  var page = req.body.page;
+  var pagesize = req.body.pagesize;
+  var numbers = (page-1)*pagesize;
+  var user_id = req.body.userId;
+  pool.query(`SELECT * FROM follow JOIN article ON follow.author_id=article.authorId WHERE follow.user_id=${user_id} LIMIT ${numbers},${pagesize}`,(error,data)=>{
+    if(error) {
+      res.json({
+        status:'0',
+        msg:'出错了',
+      });
+    }else {
+      res.json({
+        status:'1',
+        msg:'成功',
+        result:{
+          count:data.length,
+          data:data,
+        }
+      });
+    }
+  });
+});
+
+router.post('/write', function(req, res, next) {
+  var page = req.body.page;
+  var pagesize = req.body.pagesize;
+  var numbers = (page-1)*pagesize;
+  var user_id = req.body.userId;
+  pool.query(`SELECT * FROM article WHERE authorId=${user_id} LIMIT ${numbers},${pagesize}`,(error,data)=>{
+    if(error) {
+      res.json({
+        status:'0',
+        msg:'出错了',
+      });
+    }else {
+      res.json({
+        status:'1',
+        msg:'成功',
+        result:{
+          count:data.length,
+          data:data,
+        }
+      });
+    }
+  });
+});
+
+router.post('/deleteArticle', function(req, res, next) {
+  var id = req.body.id;
+  pool.query(`DELETE FROM article WHERE \`id\`='${id}'`,(error,data)=>{
+    if(error) {
+      res.json({
+        status:'0',
+        msg:'出错了',
+      });
+    }else {
+      res.json({
+        status:'1',
+        msg:'删除成功',
+      });
+    }
+  });
+});
+
+router.post('/deletelFollow', function(req, res, next) {
+  var user_id = req.body.userId;
+  var author_id = req.body.author_id;
+  pool.query(`DELETE FROM follow WHERE \`author_id\`='${author_id}' AND \`user_id\`='${user_id}'`,(error,data)=>{
+    if(error) {
+      res.json({
+        status:'0',
+        msg:'出错了',
+      });
+    }else {
+      res.json({
+        status:'1',
+        msg:'取关成功',
+      });
+    }
+  });
+});
+
 module.exports = router;

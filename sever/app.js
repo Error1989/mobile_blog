@@ -21,6 +21,7 @@ var api_military = require('./routes/api_military');
 var api_article = require('./routes/api_article');
 var api_admin = require('./routes/api_admin');
 var api_search = require('./routes/api_search');
+var api_write = require('./routes/api_write');
 
 var app = express();
 
@@ -77,6 +78,7 @@ app.use('/api_military', api_military);
 app.use('/api_article', api_article);
 app.use('/api_admin', api_admin);
 app.use('/api_search', api_search);
+app.use('/api_write', api_write);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
