@@ -3,7 +3,7 @@ var router = express.Router();
 var mysql = require('mysql');
 var crypto = require('crypto');
 
-var pool = mysql.createPool({host: 'localhost', user: 'root', password: '1q2w3e', database: 'mobile_blog'});
+var pool = mysql.createPool({host: '101.37.20.186', user: 'root', password: 'keleme123', database: 'mobile_blog'});
 
 router.post('/', function(req, res, next) {
   var userName = req.body.userName;

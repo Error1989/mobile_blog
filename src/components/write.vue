@@ -47,10 +47,10 @@
           </yd-cell-group>
           <yd-backtop></yd-backtop>
           <div v-if="nickName&&title&&partition&&content">
-            <yd-button size="large" type="primary" @click.native="submit">提 交</yd-button>
+            <yd-button size="large" type="primary" @click.native="submit">发 布</yd-button>
           </div>
           <div v-else>
-            <yd-button size="large" type="disabled" disabled>提 交</yd-button>
+            <yd-button size="large" type="disabled" disabled>发 布</yd-button>
           </div>
         </yd-pullrefresh>
 

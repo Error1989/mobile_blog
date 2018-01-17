@@ -3,7 +3,7 @@
     <yd-layout>
       <!--头部导航-->
       <yd-navbar slot="navbar" title="个人中心" bgcolor="#09bb07" color="#fff" style="height: .9rem">
-
+        <yd-icon slot="right" name="phone3" size=".5rem" color="#fff" @click.native="show6 = true"></yd-icon>
       </yd-navbar>
 
       <!--主体内容-->
@@ -66,13 +66,13 @@
                   </yd-cell-group>
                 </div>
               </yd-flexbox-item>
-              <yd-flexbox-item>
-                <div>
-                  <yd-cell-group>
-                    <yd-button size="large" type="hollow" class="button" @click.native="show6 = true">注册</yd-button>
-                  </yd-cell-group>
-                </div>
-              </yd-flexbox-item>
+              <!--<yd-flexbox-item>-->
+                <!--<div>-->
+                  <!--<yd-cell-group>-->
+                    <!--<yd-button size="large" type="hollow" class="button" @click.native="show6 = true">注册</yd-button>-->
+                  <!--</yd-cell-group>-->
+                <!--</div>-->
+              <!--</yd-flexbox-item>-->
             </yd-flexbox>
           </yd-tab-panel>
 
@@ -159,11 +159,11 @@
           </yd-cell-item>
         </yd-cell-group>
         <div v-if="nickName&&sex&&birthday">
-          <yd-button size="large" type="primary" style="bottom: 10px;margin:0 auto;width: 80%;" @click.native="changeData">提交</yd-button>
+          <yd-button size="large" type="primary" style="bottom: 10px;margin:0 auto;width: 80%;" @click.native="changeData">编辑资料</yd-button>
         </div>
 
         <div v-else>
-          <yd-button size="large" disabled type="primary" style="bottom: 10px;margin:0 auto;width: 80%;" @click.native="changeData">提交</yd-button>
+          <yd-button size="large" disabled type="primary" style="bottom: 10px;margin:0 auto;width: 80%;" @click.native="changeData">编辑资料</yd-button>
         </div>
 
       </yd-popup>
@@ -185,11 +185,11 @@
         </yd-cell-group>
 
         <div v-if="newPassword==newPassword2&&oldPassword!=newPassword&&oldPassword&&newPassword&&newPassword2">
-          <yd-button size="large" type="primary" style="bottom: 10px;margin:0 auto;width: 80%;" @click.native="changePassword">提交</yd-button>
+          <yd-button size="large" type="primary" style="bottom: 10px;margin:0 auto;width: 80%;" @click.native="changePassword">修改密码</yd-button>
         </div>
 
         <div v-else>
-          <yd-button size="large" disabled type="primary" style="bottom: 10px;margin:0 auto;width: 80%;" @click.native="changePassword">提交</yd-button>
+          <yd-button size="large" disabled type="primary" style="bottom: 10px;margin:0 auto;width: 80%;" @click.native="changePassword">修改密码</yd-button>
         </div>
 
       </yd-popup>
@@ -243,11 +243,11 @@
           </yd-cell-item>
         </yd-cell-group>
         <div v-if="register_userName&&register_userPassword&&register_sex&&register_birthday">
-          <yd-button size="large" type="primary" style="bottom: 10px;margin:0 auto;width: 80%;" @click.native="register">提交</yd-button>
+          <yd-button size="large" type="primary" style="bottom: 10px;margin:0 auto;width: 80%;" @click.native="register">注册账号</yd-button>
         </div>
 
         <div v-else>
-          <yd-button size="large" disabled type="primary" style="bottom: 10px;margin:0 auto;width: 80%;" @click.native="register">提交</yd-button>
+          <yd-button size="large" disabled type="primary" style="bottom: 10px;margin:0 auto;width: 80%;" @click.native="register">注册账号</yd-button>
         </div>
 
       </yd-popup>
@@ -263,9 +263,12 @@
             <yd-input slot="right" min="6" max="16" required type="password" v-model="userPassword" placeholder="请输入密码"></yd-input>
           </yd-cell-item>
         </yd-cell-group>
-
-        <yd-button size="large" type="primary" style="bottom: 10px;margin:0 auto;width: 80%;" @click.native="login">提交</yd-button>
-
+        <div v-if="userName&&userPassword">
+          <yd-button size="large" type="primary" style="bottom: 10px;margin:0 auto;width: 80%;" @click.native="login">登 录</yd-button>
+        </div>
+        <div v-else>
+          <yd-button size="large" disabled type="primary" style="bottom: 10px;margin:0 auto;width: 80%;">登 录</yd-button>
+        </div>
       </yd-popup>
 
       <!--底部导航-->
@@ -351,10 +354,12 @@ export default {
     this.$dialog.loading.close();
   },
   mounted () {
-    this.getUser();
-    this.getCollectionList();
-    this.getFollowList();
-    this.getWriteList();
+    if (window.localStorage.getItem('userId')&&window.localStorage.getItem('access_token')) {
+      this.getUser();
+      this.getCollectionList();
+      this.getFollowList();
+      this.getWriteList();
+    }
   },
   computed: {
 
@@ -426,10 +431,14 @@ export default {
 
     //退出
     signOut () {
+      this.$dialog.toast({
+        mes: '退出成功',
+        timeout: 1500,
+        icon: 'success',
+      });
+      this.$router.push('/index');
       window.localStorage.removeItem('userId');
       window.localStorage.removeItem('access_token');
-      window.localStorage.removeItem('nickName');
-      location.reload();
     },
 
     //获取账号资料

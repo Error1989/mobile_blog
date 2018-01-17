@@ -16,6 +16,7 @@ import video from './components/video.vue'
 import military from './components/military.vue'
 import article from './components/article.vue'
 import edirtArticle from './components/edirtArticle.vue'
+import comment from './components/comment.vue'
 
 import YDUI from 'vue-ydui'
 import 'vue-ydui/dist/ydui.rem.css'
@@ -34,7 +35,7 @@ Vue.use(VueLazyLoad,{
 
 //路由设置
 const router = new VueRouter ({
-  mode: 'history',
+  // mode: 'history',
   routes: [
     {
       path: '/',
@@ -118,6 +119,11 @@ const router = new VueRouter ({
       name: 'article',
       component: article
     },
+    {
+      path: '/comment',
+      name: 'comment',
+      component: comment
+    },
   ]
 });
 
@@ -149,5 +155,5 @@ new Vue({
   render: h => h(App),
   router,
   template: '<App/>',
-  components: { App, index, partition, message, search, admin, science, game, music, car, video, military, article, write, edirtArticle }
+  components: { App, index, partition, message, search, admin, science, game, music, car, video, military, article, write, edirtArticle, comment }
 })

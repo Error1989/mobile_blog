@@ -36,7 +36,7 @@
           <yd-tabbar-item title="收藏" :active="isCollection" type="a" herf="#" @click.native="collection">
             <yd-icon name="star-outline" slot="icon"></yd-icon>
           </yd-tabbar-item>
-          <yd-tabbar-item title="评论" active type="a" herf="#">
+          <yd-tabbar-item title="评论" :active="isLogin" :link="comment_id">
             <yd-icon name="compose" slot="icon"></yd-icon>
           </yd-tabbar-item>
         </yd-tabbar>
@@ -52,11 +52,12 @@ import axios from 'axios'
       data () {
           return {
             dataArticle: [],
-            article_id: '/article?id='+this.$route.query.id+'&authorId='+this.$route.query.authorId,
+            comment_id: '/comment?id='+this.$route.query.id+'&authorId='+this.$route.query.authorId,
             isApproval: true,
             isCollection: true,
             isFollow: false,
             isShow: true,
+            isLogin: false,
           }
       },
       beforeCreate () {
@@ -70,6 +71,11 @@ import axios from 'axios'
         this.checkFollow();
       },
       mounted () {
+        if (window.localStorage.getItem('userId')&&window.localStorage.getItem('access_token')) {
+            this.isLogin = true
+        }else {
+          this.isLogin = false
+        }
         this.getArticle();
       },
       watch: {

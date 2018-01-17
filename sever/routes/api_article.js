@@ -5,7 +5,7 @@ var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
 
-var pool = mysql.createPool({host: 'localhost', user: 'root', password: '1q2w3e', database: 'mobile_blog'});
+var pool = mysql.createPool({host: '101.37.20.186', user: 'root', password: 'keleme123', database: 'mobile_blog'});
 
 router.post('/', function(req, res, next) {
   if(req.body.article_id){
@@ -218,6 +218,92 @@ router.post('/checkFollow',function (req,res,next) {
       res.json({
         status:'1',
         msg:'已关注',
+      })
+    }
+  })
+});
+
+router.post('/comment',function (req,res,next) {
+  var user_id = req.body.userId;
+  var article_id = req.body.article_id;
+  var page = req.body.page;
+  var pagesize = req.body.pagesize;
+  var numbers = (page-1)*pagesize;
+  pool.query(`SELECT * FROM comment WHERE \`article_id\`='${article_id}' LIMIT ${numbers},${pagesize}`,(error,data)=>{
+    if(error) {
+      res.json({
+        status:'0',
+        msg:'出错了',
+      })
+    }else {
+      res.json({
+        status:'1',
+        msg:'成功',
+        result:{
+          count:data.length,
+          data:data,
+        }
+      })
+    }
+  })
+});
+
+router.post('/submitComment',function (req,res,next) {
+  var user_id = req.body.userId;
+  var article_id = req.body.article_id;
+  var nickName = req.body.nickName;
+  var portrait = req.body.portrait;
+  var post_time = req.body.post_time;
+  var content = req.body.content;
+  pool.query(`INSERT INTO comment (\`article_id\`,\`user_id\`, \`nickName\`, \`portrait\`, \`post_time\`, \`content\`) VALUES 
+  ('${article_id}','${user_id}','${nickName}','${portrait}','${post_time}','${content}')`,(error,data)=>{
+    if(error) {
+      res.json({
+        status:'0',
+        msg:'出错了',
+      })
+    }else {
+      res.json({
+        status:'1',
+        msg:'成功',
+      })
+    }
+  })
+});
+
+router.post('/changeComment',function (req,res,next) {
+  var id = req.body.id;
+  var nickName = req.body.nickName;
+  var portrait = req.body.portrait;
+  var post_time = req.body.post_time;
+  var content = req.body.content;
+  pool.query(`UPDATE comment SET \`nickName\`='${nickName}', \`portrait\`='${portrait}', \`post_time\`='${post_time}', \`content\`='${content}' WHERE \`id\`='${id}'`,(error,data)=>{
+    if(error) {
+      res.json({
+        status:'0',
+        msg:'编辑失败',
+      })
+    }else {
+      res.json({
+        status:'1',
+        msg:'编辑成功',
+      })
+    }
+  })
+});
+
+router.post('/deleteComment',function (req,res,next) {
+  var id = req.body.id;
+  pool.query(`DELETE FROM comment WHERE \`id\`='${id}'`,(error,data)=>{
+    if(error) {
+      res.json({
+        status:'0',
+        msg:'删除失败',
+      })
+    }else {
+      res.json({
+        status:'1',
+        msg:'删除成功',
       })
     }
   })
