@@ -229,6 +229,7 @@ export default {
           userId: window.localStorage.getItem('userId'),
           access_token: window.localStorage.getItem('access_token'),
           id: id,
+          article_id: this.$route.query.id,
         })
           .then((response)=>{
             this.$dialog.toast({

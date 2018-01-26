@@ -263,9 +263,18 @@ router.post('/submitComment',function (req,res,next) {
         msg:'出错了',
       })
     }else {
-      res.json({
-        status:'1',
-        msg:'成功',
+      pool.query(`UPDATE article SET \`comment\`=\`comment\`+1 WHERE \`id\`='${article_id}'`,(error,data)=>{
+        if(error) {
+          res.json({
+            status:'-1',
+            msg:'出错了',
+          })
+        }else {
+          res.json({
+            status: '1',
+            msg: '成功',
+          });
+        }
       })
     }
   })
@@ -294,6 +303,7 @@ router.post('/changeComment',function (req,res,next) {
 
 router.post('/deleteComment',function (req,res,next) {
   var id = req.body.id;
+  var article_id = req.body.article_id;
   pool.query(`DELETE FROM comment WHERE \`id\`='${id}'`,(error,data)=>{
     if(error) {
       res.json({
@@ -301,9 +311,18 @@ router.post('/deleteComment',function (req,res,next) {
         msg:'删除失败',
       })
     }else {
-      res.json({
-        status:'1',
-        msg:'删除成功',
+      pool.query(`UPDATE article SET \`comment\`=\`comment\`-1 WHERE \`id\`='${article_id}'`,(error,data)=>{
+        if(error) {
+          res.json({
+            status:'-1',
+            msg:'删除失败',
+          })
+        }else {
+          res.json({
+            status: '1',
+            msg: '删除成功',
+          });
+        }
       })
     }
   })
